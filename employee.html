@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Employee Home</title>
+</head>
+<body>
+    <div class="container">
+        <h1 id="greeting" class="text-center">employee</h1>
+        <div>
+            <div class="mb-3">
+                <label for="amountInput" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="amountInput">
+            </div>
+            <div class="mb-3">
+                <label for="reasonTextArea" class="form-label">Reason</label>
+                <textarea class="form-control" id="reasonTextArea" rows="3"></textarea>
+            </div>
+            <button class="btn btn-primary" id="submitExpenseBtn">Submit expense</button>
+            <span class="mx-2 text-danger" id="errorMessage"></span>
+        </div>
+        <hr>
+        <table class="table table-hover"  style="table-layout:fixed">
+            <thead>
+                <th>Amount</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Date submitted</th>
+                <th>Date processed</th>
+            </thead>
+            <tbody id = "tableBody">
+                <tr>
+                    <td>amount</td>
+                    <td>reason</td>
+                    <td>status</td>
+                    <td>date</td>
+                    <td>date</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="mt-5 mb-3 text-muted text-center">&copy; Revature 2021</p>
+
+    </div>
+
+</body>
+<script src="./JS/employee.js"></script>
+</html>
