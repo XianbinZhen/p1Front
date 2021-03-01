@@ -9,9 +9,12 @@ loginBtn.addEventListener("click", login);
 async function login() {
     const username = accountInput.value;
     const password = passwordInput.value;
-    let user = await checkUserpassword(username, password);
+    let user = {
+        username,
+        password
+    };
 
-    isLogin = user.username == username;
+    // isLogin = user.username == username;
 
     
 
@@ -22,23 +25,27 @@ async function login() {
 
     const httpResponse = await fetch("http://localhost:7000/users/login", detail);
     const jwt = await httpResponse.text();
-    localStorage.setItem("jwt", jwt);
-    sessionStorage.setItem("jwt", jwt);
-    sessionStorage.setItem("userInfo", JSON.stringify(user));
-    // console.log(jwt);
-    if (isLogin) {
-        if (user.isManager)
+    // console.log(jwt)
+    if ( jwt != "Incorrect username or password") {
+        user = JSON.parse(atob(jwt.split('.')[1]));
+        localStorage.setItem("jwt", jwt);
+        sessionStorage.setItem("jwt", jwt);
+        sessionStorage.setItem("userInfo", JSON.stringify(user));
+        // console.log(jwt);
+        console.log(user)
+        if (user.role == "manager")
             window.location.href = "../manager.html";
         else
             window.location.href = "../employee.html";
+
     } else {
-        alert("please login")
+        alert("Incorrect username or password")
     }
 }
 
-async function checkUserpassword(username, password) {
-    const httpResponse = await fetch(`http://localhost:7000/employee?username=${username}&password=${password}`);
-    const user = await httpResponse.json();
-    console.log(user);
-    return user;
-}
+// async function checkUserpassword(username, password) {
+//     const httpResponse = await fetch(`http://localhost:7000/employee?username=${username}&password=${password}`);
+//     const user = await httpResponse.json();
+//     console.log(user);
+//     return user;
+// }

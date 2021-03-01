@@ -8,7 +8,7 @@ const dateSortBtn = document.getElementById("dateSortBtn");
 
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const jwt = localStorage.getItem("jwt")
-greetingTag.innerHTML = `welcome: ${userInfo.isManager? "manager" : "employee"} ${userInfo.firstName} ${userInfo.lastName}`;
+greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userInfo.lastName}`;
 const employeeId = userInfo.employeeId;
 let expenseList;
 let idSortAscBtn = false;
