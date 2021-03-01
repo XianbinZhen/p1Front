@@ -1,3 +1,9 @@
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+const piechart = document.getElementById("piechart");
+const piechart2 = document.getElementById("piechart2");
 const greetingTag = document.getElementById("greeting");
 const tableBody = document.getElementById("tableBody");
 const idSortBtn = document.getElementById("idSortBtn");
@@ -5,13 +11,61 @@ const amountSortBtn = document.getElementById("amountSortBtn");
 const statusSortBtn = document.getElementById("statusSortBtn");
 const dateSortBtn = document.getElementById("dateSortBtn");
 
-
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const jwt = localStorage.getItem("jwt")
 greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userInfo.lastName}`;
 const employeeId = userInfo.employeeId;
 let expenseList;
+let pendingCount = 0;
+let approvedCount = 0;
+let deniedCount = 0;
+let pendingAmount = 0;
+let approvedAmount = 0;
+let deniedAmount = 0;
 let idSortAscBtn = false;
+
+function drawChart() {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Status');
+    data.addColumn('number', 'Count');
+    data.addRows([
+        ['PENDING', pendingCount],
+        ['APPROVED', approvedCount],
+        ['DENIED', deniedCount]
+    ]);
+
+    const data2 = new google.visualization.arrayToDataTable([
+        ['Status', 'Amount', {role: 'style'}],
+        ['PENDING', pendingAmount, 'color: gray' ],
+        ['APPROVED', approvedAmount, 'color: green'],
+        ['DENIED', deniedAmount, 'color: orange']
+    ]);
+
+    // Set chart options
+    const options = {'title':'Expense Approval Rate',
+        // is3D: true,
+        'width':400,
+        'height':300,
+        pieHole: 0.3,
+        slices: {
+            0: { color: 'gray' },
+            1: { color: 'green' },
+            2: { color: 'orange' }
+        }};
+    const options2 = {'title':'Expense Approval Amount ($)',
+        is3D: true,
+        'width':400,
+        'height':300,
+        legend: 'none',
+        bar: {groupWidth: "85%"},
+    };
+    // Instantiate and draw our chart, passing in some options.
+    const chart = new google.visualization.PieChart(piechart);
+    const chart2 = new google.visualization.BarChart(piechart2);
+    chart.draw(data, options);
+    chart2.draw(data2, options2);
+}
+
 
 idSortBtn.addEventListener("click", () => {
     resetSortBtnStyle();
@@ -84,6 +138,12 @@ amountSortBtn.addEventListener("click", () => {
 
 function disPlayTable(expenseList) {
     let innerHtml = '';
+    pendingCount = 0;
+    approvedCount = 0;
+    deniedCount = 0;
+    pendingAmount = 0;
+    approvedAmount = 0;
+    deniedAmount = 0;
     if (expenseList == null)
         return;
     expenseList.forEach(expense => {
@@ -103,9 +163,21 @@ function disPlayTable(expenseList) {
         <td class="align-middle">
             <textarea class="form-control" id="reasonTextArea${expense.expenseId}" rows="2">${expense.reason}</textarea>
         </td>
-    </tr>`
+    </tr>`;
+        if (expense.status == "PENDING") {
+            pendingCount++;
+            pendingAmount += expense.amount;
+        } else if (expense.status == "DENIED") {
+            deniedCount++;
+            deniedAmount += expense.amount;
+        } else {
+            approvedCount++;
+            approvedAmount += expense.amount;
+        }
     });
+
     tableBody.innerHTML = innerHtml;
+    drawChart();
 }
 
 async function getAllExpense() {
@@ -150,7 +222,6 @@ async function getExpenseById(expenseId) {
 
 async function setUp() {
     expenseList = await getAllExpense();
-    expenseList.sort( (a, b) => a.expenseId > b.expenseId ? 1 : -1)
     disPlayTable(expenseList);
 }
 
