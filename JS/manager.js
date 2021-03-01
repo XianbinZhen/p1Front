@@ -2,6 +2,7 @@
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
+const logoutBtn = document.getElementById("logoutBtn");
 const piechart = document.getElementById("piechart");
 const piechart2 = document.getElementById("piechart2");
 const greetingTag = document.getElementById("greeting");
@@ -23,6 +24,12 @@ let pendingAmount = 0;
 let approvedAmount = 0;
 let deniedAmount = 0;
 let idSortAscBtn = false;
+
+logoutBtn.addEventListener("click", () => {
+    sessionStorage.removeItem("jwt")
+    sessionStorage.removeItem("userInfo");
+    window.location.href = "../index.html";
+});
 
 function drawChart() {
     const data = new google.visualization.DataTable();
@@ -47,6 +54,7 @@ function drawChart() {
         'width':400,
         'height':300,
         pieHole: 0.3,
+        fontName: 'Contrail One',
         slices: {
             0: { color: 'gray' },
             1: { color: 'green' },
@@ -58,6 +66,7 @@ function drawChart() {
         'height':300,
         legend: 'none',
         bar: {groupWidth: "85%"},
+        fontName: 'Contrail One'
     };
     // Instantiate and draw our chart, passing in some options.
     const chart = new google.visualization.PieChart(piechart);

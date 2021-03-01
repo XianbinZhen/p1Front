@@ -1,3 +1,4 @@
+const logoutBtn = document.getElementById("logoutBtn");
 const greetingTag = document.getElementById("greeting");
 const tableBody = document.getElementById("tableBody");
 const amountInput = document.getElementById("amountInput");
@@ -10,6 +11,13 @@ const employeeId = userInfo.employeeId;
 const jwt = localStorage.getItem("jwt")
 
 greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userInfo.lastName}`;
+
+logoutBtn.addEventListener("click", () => {
+    sessionStorage.removeItem("jwt")
+    sessionStorage.removeItem("userInfo");
+    window.location.href = "../index.html";
+});
+
 submitExpenseBtn.addEventListener("click", createExpense)
 
 
@@ -21,7 +29,7 @@ async function getAllExpenseByEmployeeId(id) {
 
     allExpense.forEach(element => {
         innerHtml += `<tr>
-        <td>$ ${element.amount}</td>
+        <td><i class="fas fa-dollar-sign"></i> ${element.amount}</td>
         <td style="overflow: hidden">${element.reason}</td>
         <td>${element.status}</td>
         <td>${new Date(element.dateSubmitted * 1000).toLocaleString()}</td>
