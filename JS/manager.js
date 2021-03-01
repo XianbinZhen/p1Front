@@ -9,7 +9,7 @@ const dateSortBtn = document.getElementById("dateSortBtn");
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const jwt = localStorage.getItem("jwt")
 greetingTag.innerHTML = `welcome: ${userInfo.isManager? "manager" : "employee"} ${userInfo.firstName} ${userInfo.lastName}`;
-const employeeId = 1;
+const employeeId = userInfo.employeeId;
 let expenseList;
 let idSortAscBtn = false;
 
@@ -84,6 +84,8 @@ amountSortBtn.addEventListener("click", () => {
 
 function disPlayTable(expenseList) {
     let innerHtml = '';
+    if (expenseList == null)
+        return;
     expenseList.forEach(expense => {
         innerHtml += `<tr>
         <td class="align-middle">${expense.employeeId}</td>

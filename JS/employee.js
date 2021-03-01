@@ -6,7 +6,7 @@ const submitExpenseBtn = document.getElementById("submitExpenseBtn");
 const errorMessage = document.getElementById("errorMessage");
 
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-const employeeId = 1;
+const employeeId = userInfo.employeeId;
 const jwt = localStorage.getItem("jwt")
 
 greetingTag.innerHTML = `welcome: ${userInfo.isManager? "manager" : "employee"} ${userInfo.firstName} ${userInfo.lastName}`;
