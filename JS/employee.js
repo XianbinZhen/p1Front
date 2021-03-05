@@ -22,7 +22,7 @@ submitExpenseBtn.addEventListener("click", createExpense)
 
 
 async function getAllExpenseByEmployeeId(id) {
-    const httpResponse = await fetch(`http://localhost:7000/expense?employeeId=${id}`);
+    const httpResponse = await fetch(`http://35.202.169.35:7000/expense?employeeId=${id}`);
     const allExpense = await httpResponse.json();
     
     let innerHtml = '';
@@ -53,7 +53,7 @@ async function createExpense() {
             method: "POST",
             body: JSON.stringify(expense)
         }
-        const httpResponse = await fetch("http://localhost:7000/expense", detail);
+        const httpResponse = await fetch("http://35.202.169.35:7000/expense", detail);
         if(httpResponse.status === 201){
             // alert("Your book was saved correctly")
             getAllExpenseByEmployeeId(employeeId);

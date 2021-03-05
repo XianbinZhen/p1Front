@@ -230,7 +230,7 @@ function disPlayTable(expenseList) {
 }
 
 async function getAllExpense() {
-    const httpResponse = await fetch("http://localhost:7000/expense");
+    const httpResponse = await fetch("http://35.202.169.35:7000/expense");
     const allExpense = await httpResponse.json();
     // expenseList = allExpense;
     // disPlayTable(allExpense);
@@ -249,7 +249,7 @@ async function approveExpense(expenseId, isApproved) {
         },
         body: JSON.stringify(expense)
     }
-    const httpResponse = await fetch(`http://localhost:7000/expense/${expenseId}`, detail);
+    const httpResponse = await fetch(`http://35.202.169.35:7000/expense/${expenseId}`, detail);
     const resBody = await httpResponse.json();
     // console.log(resBody)
     expenseList = expenseList.map(e => {
@@ -262,7 +262,7 @@ async function approveExpense(expenseId, isApproved) {
 }
 
 async function getExpenseById(expenseId) {
-    const httpResponse = await fetch(`http://localhost:7000/expense/${expenseId}`);
+    const httpResponse = await fetch(`http://35.202.169.35:7000/expense/${expenseId}`);
     const expense = await httpResponse.json();
     // console.log(expense);
     // console.log(expense.employeeId)

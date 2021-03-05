@@ -28,7 +28,7 @@ async function login() {
         body: JSON.stringify(user)
     }
 
-    const httpResponse = await fetch("http://localhost:7000/users/login", detail);
+    const httpResponse = await fetch("http://35.202.169.35:7000/users/login", detail);
     const jwt = await httpResponse.text();
     // console.log(jwt)
     if ( jwt != "Incorrect username or password") {
