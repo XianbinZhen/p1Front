@@ -15,7 +15,7 @@ greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userI
 logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwt")
     sessionStorage.removeItem("userInfo");
-    window.location.href = "../index.html";
+    window.location.href = "index.html";
 });
 
 submitExpenseBtn.addEventListener("click", createExpense)

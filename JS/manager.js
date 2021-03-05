@@ -33,7 +33,7 @@ let currentPageNumber = 0;
 logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwt")
     sessionStorage.removeItem("userInfo");
-    window.location.href = "../index.html";
+    window.location.href = "index.html";
 });
 
 function drawChart() {
@@ -60,6 +60,18 @@ function drawChart() {
         'height':300,
         pieHole: 0.3,
         fontName: 'Contrail One',
+        legendTextStyle: { color: '#FFF' },
+        titleTextStyle: { color: '#FFF' },
+        hAxis: {
+            textStyle:{color: 'white'}
+        },
+        vAxis: {
+            textStyle:{color: 'white'}
+        },
+        backgroundColor: {
+            fill: 'black',
+            fillOpacity: 0.6
+        },
         slices: {
             0: { color: 'gray' },
             1: { color: 'green' },
@@ -71,7 +83,19 @@ function drawChart() {
         'height':300,
         legend: 'none',
         bar: {groupWidth: "85%"},
-        fontName: 'Contrail One'
+        fontName: 'Contrail One',
+        legendTextStyle: { color: '#FFF' },
+        titleTextStyle: { color: '#FFF' },
+        hAxis: {
+            textStyle:{color: 'white'}
+        },
+        vAxis: {
+            textStyle:{color: 'white'}
+        },
+        backgroundColor: {
+            fill: 'black',
+            fillOpacity: 0.6
+        },
     };
     // Instantiate and draw our chart, passing in some options.
     const chart = new google.visualization.PieChart(piechart);
@@ -206,19 +230,19 @@ function disPlayTable(expenseList) {
     let expenseListCopy = expenseList.slice(currentPageNumber*itemPerPage, endIndex);
     expenseListCopy.forEach(expense => {
         innerHtml += `<tr>
-        <td class="align-middle">${expense.employeeId}</td>
-        <td class="align-middle"><i class="fas fa-dollar-sign"></i> ${expense.amount}</td>
-        <td class="align-middle">
+        <td>${expense.employeeId}</td>
+        <td><i class="fas fa-dollar-sign"></i> ${expense.amount}</td>
+        <td>
             <span class="mr-2">${expense.status}</span>
             <button class="btn btn-sm btn-outline-success" onclick="approveExpense(${expense.expenseId}, true)">approve</button>
             <button class="btn btn-sm btn-outline-danger" onclick="approveExpense(${expense.expenseId}, false)">deny</button>
         </td>
-        <td class="align-middle">
+        <td>
             <small>Submit on ${new Date(expense.dateSubmitted * 1000).toLocaleString()}</small>
             <br>
             <small>Process on ${new Date(expense.dateProcessed * 1000).toLocaleString()}</small>
         </td>
-        <td class="align-middle">
+        <td>
             <textarea class="form-control" id="reasonTextArea${expense.expenseId}" rows="2">${expense.reason}</textarea>
         </td>
     </tr>`;

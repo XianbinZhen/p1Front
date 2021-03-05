@@ -39,9 +39,9 @@ async function login() {
         // console.log(jwt);
         console.log(user)
         if (user.role == "manager")
-            window.location.href = "../manager.html";
+            window.location.href = "manager.html";
         else
-            window.location.href = "../employee.html";
+            window.location.href = "employee.html";
 
     } else {
         alert("Incorrect username or password")

@@ -9,31 +9,33 @@
     <link rel="stylesheet" href="./CSS/style.css">
     <title>Manager Home</title>
 </head>
-<body>
+<body class="main-background">
     <div class="container">
-        <div class="row align-items-center mt-2">
-            <div class="col">
-                <h1 id="greeting">manager home</h1>
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div >
+                <h1 id="greeting" class="text-white my-3">manager home</h1>
             </div>
-            <div class="col-md-2">
-                <button class="btn btn-secondary" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log out</button>
+            <div >
+                <button class="btn btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log out</button>
             </div>
         </div>
-        <div class="row align-items-center justify-content-center">
-            <div id="piechart" class="col"></div>
-            <div id="piechart2" class="col"></div>
+        <div class="d-flex align-items-center justify-content-center flex-wrap my-3">
+            <div id="piechart"></div>
+            <div id="piechart2"></div>
         </div>
-        <ul class="pagination align-items-center">
-            <li class="page-item">
-                <button class="nextBtn btn btn-primary" id="previousBtn" >Previous</button>
-            </li>
-            <li class="page-item"><Span class="mx-2" id="currentPage">1 / 3</Span></li>
-            <li class="page-item">
-                <button class="nextBtn btn btn-primary" id="nextBtn">Next</button>
-            </li>
-        </ul>
-        <table class="table table-hover table-sm"  style="table-layout:fixed">
-            <caption>List of expense</caption>
+    </div>
+    <hr class="text-white">
+    <ul class="pagination align-items-center mt-3">
+        <li class="page-item">
+            <button class="nextBtn btn btn-danger m-1" id="previousBtn" >Previous</button>
+        </li>
+        <li class="page-item"><Span class="mx-2 text-white" id="currentPage">1 / 3</Span></li>
+        <li class="page-item">
+            <button class="nextBtn btn btn-danger m-1" id="nextBtn">Next</button>
+        </li>
+    </ul>
+        <table class="table table-hover table-sm table-dark mx-auto align-middle text-center"  style="table-layout:fixed">
+            <caption class="mx-5">List of expense</caption>
             <thead>
                 <th class="col-md-1">Id<i class="mx-1 fas fa-sort-up" role="button" id="idSortBtn"></i></i></th>
                 <th class="col-md-2">Amount<i role="button" id="amountSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
@@ -41,7 +43,7 @@
                 <th class="col-md-4">Date<i role="button" id="dateSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
                 <th class="col-md-4">Reason</th>
             </thead>
-            <tbody id = "tableBody">
+            <tbody id = "tableBody" >
                 <tr>
                     <td>amount</td>
                     <td>reason</td>
@@ -52,7 +54,6 @@
             </tbody>
         </table>
         <p class="mt-5 mb-3 text-muted text-center"><i class="far fa-copyright"></i> Revature 2021</p>
-    </div>
 
 </body>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
