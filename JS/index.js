@@ -5,6 +5,11 @@ const loginBtn = document.getElementById("loginBtn");
 let isLogin = false;
 
 loginBtn.addEventListener("click", login);
+passwordInput.addEventListener("keyup", (e) => {
+    if(e.code == 'NumpadEnter' || e.code == 'Enter') {
+        login();
+    }
+});
 
 async function login() {
     const username = accountInput.value;

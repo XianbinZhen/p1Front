@@ -6,6 +6,9 @@ const logoutBtn = document.getElementById("logoutBtn");
 const piechart = document.getElementById("piechart");
 const piechart2 = document.getElementById("piechart2");
 const greetingTag = document.getElementById("greeting");
+const previousBtn = document.getElementById("previousBtn");
+const nextBtn = document.getElementById("nextBtn");
+const currentPage = document.getElementById("currentPage");
 const tableBody = document.getElementById("tableBody");
 const idSortBtn = document.getElementById("idSortBtn");
 const amountSortBtn = document.getElementById("amountSortBtn");
@@ -24,6 +27,8 @@ let pendingAmount = 0;
 let approvedAmount = 0;
 let deniedAmount = 0;
 let idSortAscBtn = false;
+const itemPerPage = 10;
+let currentPageNumber = 0;
 
 logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwt")
@@ -76,15 +81,29 @@ function drawChart() {
 }
 
 
+previousBtn.addEventListener("click", () => {
+    if(currentPageNumber > 0) {
+        currentPageNumber--;
+        disPlayTable(expenseList);
+    }
+});
+
+nextBtn.addEventListener("click", () => {
+    if(currentPageNumber < Math.ceil(expenseList.length / itemPerPage) - 1) {
+        currentPageNumber++;
+        disPlayTable(expenseList);
+    }
+});
+
 idSortBtn.addEventListener("click", () => {
     resetSortBtnStyle();
     if (idSortAscBtn) {
-        expenseList.sort( (a, b) => a.expenseId > b.expenseId ? 1 : -1)
+        expenseList.sort( (a, b) => a.employeeId > b.employeeId ? 1 : -1)
         idSortBtn.classList = "mx-1 fas fa-sort-up";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
     } else {
-        expenseList.sort( (a, b) => a.expenseId < b.expenseId ? 1 : -1)
+        expenseList.sort( (a, b) => a.employeeId < b.employeeId ? 1 : -1)
         idSortBtn.classList = "mx-1 fas fa-sort-down";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
@@ -121,14 +140,8 @@ dateSortBtn.addEventListener("click", () => {
     }
 });
 
-function resetSortBtnStyle() {
-    idSortBtn.classList = "mx-1 fas fa-minus-circle";
-    amountSortBtn.classList = "mx-1 fas fa-minus-circle";
-    statusSortBtn.classList = "mx-1 fas fa-minus-circle";
-    dateSortBtn.classList = "mx-1 fas fa-minus-circle";
-}
-
 amountSortBtn.addEventListener("click", () => {
+    resetSortBtnStyle();
     if (idSortAscBtn) {
         expenseList.sort( (a, b) => parseFloat(a.amount) > parseFloat(b.amount) ? 1 : -1)
         amountSortBtn.classList = "mx-1 fas fa-sort-up";
@@ -145,7 +158,29 @@ amountSortBtn.addEventListener("click", () => {
 });
 
 
+function resetSortBtnStyle() {
+    idSortBtn.classList = "mx-1 fas fa-minus-circle";
+    amountSortBtn.classList = "mx-1 fas fa-minus-circle";
+    statusSortBtn.classList = "mx-1 fas fa-minus-circle";
+    dateSortBtn.classList = "mx-1 fas fa-minus-circle";
+    restPageNumbers();
+}
+function restPageNumbers() {
+    currentPageNumber = 0;
+}
+
+
+
 function disPlayTable(expenseList) {
+    const totalPages = Math.ceil(expenseList.length / itemPerPage);
+    if(currentPageNumber < 1)
+        previousBtn.disabled = true;
+    else
+        previousBtn.disabled = false;
+    if(currentPageNumber >= totalPages - 1)
+        nextBtn.disabled = true;
+    else
+        nextBtn.disabled = false;
     let innerHtml = '';
     pendingCount = 0;
     approvedCount = 0;
@@ -156,6 +191,20 @@ function disPlayTable(expenseList) {
     if (expenseList == null)
         return;
     expenseList.forEach(expense => {
+        if (expense.status == "PENDING") {
+            pendingCount++;
+            pendingAmount += expense.amount;
+        } else if (expense.status == "DENIED") {
+            deniedCount++;
+            deniedAmount += expense.amount;
+        } else {
+            approvedCount++;
+            approvedAmount += expense.amount;
+        }
+    });
+    let endIndex = currentPageNumber * itemPerPage + itemPerPage;
+    let expenseListCopy = expenseList.slice(currentPageNumber*itemPerPage, endIndex);
+    expenseListCopy.forEach(expense => {
         innerHtml += `<tr>
         <td class="align-middle">${expense.employeeId}</td>
         <td class="align-middle"><i class="fas fa-dollar-sign"></i> ${expense.amount}</td>
@@ -173,19 +222,10 @@ function disPlayTable(expenseList) {
             <textarea class="form-control" id="reasonTextArea${expense.expenseId}" rows="2">${expense.reason}</textarea>
         </td>
     </tr>`;
-        if (expense.status == "PENDING") {
-            pendingCount++;
-            pendingAmount += expense.amount;
-        } else if (expense.status == "DENIED") {
-            deniedCount++;
-            deniedAmount += expense.amount;
-        } else {
-            approvedCount++;
-            approvedAmount += expense.amount;
-        }
     });
 
     tableBody.innerHTML = innerHtml;
+    currentPage.innerHTML = `${currentPageNumber+1} / ${totalPages}`;
     drawChart();
 }
 
