@@ -1,7 +1,7 @@
 const accountInput = document.getElementById("accountInput");
 const passwordInput = document.getElementById("passwordInput");
 const loginBtn = document.getElementById("loginBtn");
-
+const snackbar = document.getElementById("snackbar");
 let isLogin = false;
 
 loginBtn.addEventListener("click", login);
@@ -42,12 +42,16 @@ async function login() {
             window.location.href = "manager.html";
         else
             window.location.href = "employee.html";
-
     } else {
-        alert("Incorrect username or password")
+        showSnackbar("Incorrect username or password");
     }
 }
 
+function showSnackbar(message) {
+    snackbar.className = "show";
+    snackbar.innerText = message;
+    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+}
 // async function checkUserpassword(username, password) {
 //     const httpResponse = await fetch(`http://localhost:7000/employee?username=${username}&password=${password}`);
 //     const user = await httpResponse.json();
