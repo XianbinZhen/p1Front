@@ -110,12 +110,12 @@ nextBtn.addEventListener("click", () => {
 idSortBtn.addEventListener("click", () => {
     resetSortBtnStyle();
     if (idSortAscBtn) {
-        expenseList.sort( (a, b) => a.employeeId > b.employeeId ? 1 : -1)
+        expenseList.sort( (a, b) => a.employee.lastName > b.employee.lastName ? 1 : -1)
         idSortBtn.classList = "mx-1 fas fa-sort-up";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
     } else {
-        expenseList.sort( (a, b) => a.employeeId < b.employeeId ? 1 : -1)
+        expenseList.sort( (a, b) => a.employee.lastName < b.employee.lastName ? 1 : -1)
         idSortBtn.classList = "mx-1 fas fa-sort-down";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
@@ -125,12 +125,12 @@ idSortBtn.addEventListener("click", () => {
 statusSortBtn.addEventListener("click", () => {
     resetSortBtnStyle();
     if (idSortAscBtn) {
-        expenseList.sort( (a, b) => a.status > b.status ? 1 : -1)
+        expenseList.sort( (a, b) => a.expense.status > b.expense.status ? 1 : -1)
         statusSortBtn.classList = "mx-1 fas fa-sort-up";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
     } else {
-        expenseList.sort( (a, b) => a.status < b.status ? 1 : -1)
+        expenseList.sort( (a, b) => a.expense.status < b.expense.status ? 1 : -1)
         statusSortBtn.classList = "mx-1 fas fa-sort-down";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
@@ -140,12 +140,12 @@ statusSortBtn.addEventListener("click", () => {
 dateSortBtn.addEventListener("click", () => {
     resetSortBtnStyle();
     if (idSortAscBtn) {
-        expenseList.sort( (a, b) => a.dateSubmitted > b.dateSubmitted ? 1 : -1)
+        expenseList.sort( (a, b) => a.expense.dateSubmitted > b.expense.dateSubmitted ? 1 : -1)
         dateSortBtn.classList = "mx-1 fas fa-sort-up";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
     } else {
-        expenseList.sort( (a, b) => a.dateSubmitted < b.dateSubmitted ? 1 : -1)
+        expenseList.sort( (a, b) => a.expense.dateSubmitted < b.expense.dateSubmitted ? 1 : -1)
         dateSortBtn.classList = "mx-1 fas fa-sort-down";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
@@ -155,13 +155,13 @@ dateSortBtn.addEventListener("click", () => {
 amountSortBtn.addEventListener("click", () => {
     resetSortBtnStyle();
     if (idSortAscBtn) {
-        expenseList.sort( (a, b) => parseFloat(a.amount) > parseFloat(b.amount) ? 1 : -1)
+        expenseList.sort( (a, b) => parseFloat(a.expense.amount) > parseFloat(b.expense.amount) ? 1 : -1)
         amountSortBtn.classList = "mx-1 fas fa-sort-up";
         idSortBtn.classList = "mx-1 fas fa-minus-circle";
         idSortAscBtn = !idSortAscBtn;
         disPlayTable(expenseList);
     } else {
-        expenseList.sort( (a, b) => parseFloat(a.amount) < parseFloat(b.amount) ? 1 : -1)
+        expenseList.sort( (a, b) => parseFloat(a.expense.amount) < parseFloat(b.expense.amount) ? 1 : -1)
         amountSortBtn.classList = "mx-1 fas fa-sort-down";
         idSortBtn.classList = "mx-1 fas fa-minus-circle";
         idSortAscBtn = !idSortAscBtn;
@@ -203,39 +203,39 @@ function disPlayTable(expenseList) {
     if (expenseList == null)
         return;
     expenseList.forEach(expense => {
-        if (expense.status == "PENDING") {
+        if (expense.expense.status == "PENDING") {
             pendingCount++;
-            pendingAmount += expense.amount;
-        } else if (expense.status == "DENIED") {
+            pendingAmount += expense.expense.amount;
+        } else if (expense.expense.status == "DENIED") {
             deniedCount++;
-            deniedAmount += expense.amount;
+            deniedAmount += expense.expense.amount;
         } else {
             approvedCount++;
-            approvedAmount += expense.amount;
+            approvedAmount += expense.expense.amount;
         }
     });
     let endIndex = currentPageNumber * itemPerPage + itemPerPage;
     let expenseListCopy = expenseList.slice(currentPageNumber*itemPerPage, endIndex);
     expenseListCopy.forEach(expense => {
         innerHtml += `<tr>
-        <td>${expense.employeeId}</td>
-        <td><i class="fas fa-dollar-sign"></i> ${expense.amount}</td>
+        <td>${expense.employee.firstName} ${expense.employee.lastName}</td>
+        <td><i class="fas fa-dollar-sign"></i> ${expense.expense.amount}</td>
         <td>
-            <span class="mx-auto d-block">${expense.status}</span>
-            <button class="btn btn-sm btn-outline-success m-1" onclick="approveExpense(${expense.expenseId}, true)">approve</button>
-            <button class="btn btn-sm btn-outline-danger m-1" onclick="approveExpense(${expense.expenseId}, false)">deny</button>
+            <span class="mx-auto d-block">${expense.expense.status}</span>
+            <button class="btn btn-sm btn-outline-success m-1" onclick="approveExpense(${expense.expense.expenseId}, true)">approve</button>
+            <button class="btn btn-sm btn-outline-danger m-1" onclick="approveExpense(${expense.expense.expenseId}, false)">deny</button>
         </td>
         <td>
-            <small>Submit on ${new Date(expense.dateSubmitted * 1000).toLocaleString()}</small>
+            <small>Submit on ${new Date(expense.expense.dateSubmitted * 1000).toLocaleString()}</small>
             <br>
-            <small>Process on ${new Date(expense.dateProcessed * 1000).toLocaleString()}</small>
+            <small>Process on ${new Date(expense.expense.dateProcessed * 1000).toLocaleString()}</small>
         </td>
         <td>
-            <textarea class="form-control" id="reasonTextArea${expense.expenseId}" rows="2">${expense.reason}</textarea>
+            <textarea class="form-control" id="reasonTextArea${expense.expense.expenseId}" rows="2">${expense.expense.reason}</textarea>
         </td>
         <td>
-            <a href="${expense.imgUrl}" target="_blank">
-                <img class="thumbnail" src="${expense.imgUrl}" alt="No img" onerror="this.onerror=null; this.remove();">
+            <a href="${expense.expense.imgUrl}" target="_blank">
+                <img class="thumbnail" src="${expense.expense.imgUrl}" alt="No img" onerror="this.onerror=null; this.remove();">
             </a>
         </td>
     </tr>`;
@@ -247,7 +247,7 @@ function disPlayTable(expenseList) {
 }
 
 async function getAllExpense() {
-    const httpResponse = await fetch("http://35.202.169.35:7000/expense");
+    const httpResponse = await fetch("http://35.202.169.35:7000/expenseJoinEmployee");
     const allExpense = await httpResponse.json();
     // expenseList = allExpense;
     // disPlayTable(allExpense);
@@ -271,11 +271,14 @@ async function approveExpense(expenseId, isApproved) {
     const resBody = await httpResponse.json();
     // console.log(resBody)
     expenseList = expenseList.map(e => {
-        if(e.expenseId == expenseId)
-            return resBody;
+        if(e.expense.expenseId == expenseId)
+            return ({
+                    ...e,
+                    expense: resBody
+                });
         else
             return e;
-    })
+    });
     disPlayTable(expenseList);
     spinner.className = "invisible";
     showSnackbar("Status changed")
