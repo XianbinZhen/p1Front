@@ -1,15 +1,37 @@
+
+// Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+var firebaseConfig = {
+    apiKey: "AIzaSyDXYgAR6kVbM_9IPUUVPDYhDFOkKEhvibc",
+    authDomain: "zhen-305115.firebaseapp.com",
+    databaseURL: "https://zhen-305115-default-rtdb.firebaseio.com",
+    projectId: "zhen-305115",
+    storageBucket: "zhen-305115.appspot.com",
+    messagingSenderId: "144990151322",
+    appId: "1:144990151322:web:1623397d7a8738d6e37523",
+    measurementId: "G-KC010JGBK6"
+};
+  // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
 const logoutBtn = document.getElementById("logoutBtn");
 const greetingTag = document.getElementById("greeting");
 const tableBody = document.getElementById("tableBody");
 const amountInput = document.getElementById("amountInput");
+const uploader = document.getElementById("uploader")
+const fileButton = document.getElementById("fileButton");
 const reasonTextArea = document.getElementById("reasonTextArea");
 const submitExpenseBtn = document.getElementById("submitExpenseBtn");
 const errorMessage = document.getElementById("errorMessage");
+const snackbar = document.getElementById("snackbar");
+const spinner = document.getElementById("spinner");
 
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const employeeId = userInfo.employeeId;
 const jwt = localStorage.getItem("jwt")
-
+let file = null;
+let imgURL = null;
 greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userInfo.lastName}`;
 
 logoutBtn.addEventListener("click", () => {
@@ -17,6 +39,30 @@ logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("userInfo");
     window.location.href = "index.html";
 });
+
+fileButton.addEventListener("change", e => {
+    file = e.target.files[0];
+});
+
+function uploadFileToFirebase() {
+    if (file == null) return;
+    let storageRef = firebase.storage().ref(`Images/${file.name}`);
+    let task = storageRef.put(file);
+    task.on("state_change",
+        function progress(snapshot) {
+            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            uploader.value = percentage;
+        },
+        function error(err) {
+            console.log(err);
+        },
+        function complete(){
+            task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                imgURL = downloadURL;
+                // console.log('File available at', downloadURL);
+            });
+        });
+};
 
 submitExpenseBtn.addEventListener("click", createExpense)
 
@@ -40,31 +86,57 @@ async function getAllExpenseByEmployeeId(id) {
 }
 
 async function createExpense() {
+    spinner.className = "visible";
     const amount = parseFloat(amountInput.value);
     const reason = reasonTextArea.value;
     if (reason != "" && amount > 0) {
+        uploadFileToFirebase();
         const expense = {
             reason,
             amount,
             employeeId: employeeId,
-            status: "PENDING"
+            status: "PENDING",
+            imgURL
         }
+        console.log(imgURL)
         const detail = {
             method: "POST",
             body: JSON.stringify(expense)
         }
         const httpResponse = await fetch("http://35.202.169.35:7000/expense", detail);
         if(httpResponse.status === 201){
+            clearInput(); 
             // alert("Your book was saved correctly")
             getAllExpenseByEmployeeId(employeeId);
             errorMessage.innerHTML = "";
+            showSnackbar("Your expense is submitted successfully."); 
+    spinner.className = "invisible";
+
         }else{
             errorMessage.innerHTML = "Cannot save to database."
+            showSnackbar(`Error: ${httpResponse.status}`)
+    spinner.className = "invisible";
+
         }
     } else {
         errorMessage.innerHTML = "Please fill out the form with correct data."
+        showSnackbar("Incorrect field.")
+    spinner.className = "invisible";
+
     }
 }
 
+function clearInput() {
+    reasonTextArea.value = "";
+    amountInput.value = "";
+    fileButton.value = "";
+    uploader.value = 0;
+}
+
+function showSnackbar(message) {
+    snackbar.className = "show";
+    snackbar.innerText = message;
+    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+}
 
 getAllExpenseByEmployeeId(employeeId);

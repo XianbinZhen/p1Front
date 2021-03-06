@@ -14,6 +14,9 @@ const idSortBtn = document.getElementById("idSortBtn");
 const amountSortBtn = document.getElementById("amountSortBtn");
 const statusSortBtn = document.getElementById("statusSortBtn");
 const dateSortBtn = document.getElementById("dateSortBtn");
+const snackbar = document.getElementById("snackbar");
+const spinner = document.getElementById("spinner");
+
 
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const jwt = localStorage.getItem("jwt")
@@ -37,24 +40,21 @@ logoutBtn.addEventListener("click", () => {
 });
 
 function drawChart() {
-    const data = new google.visualization.DataTable();
-    data.addColumn('string', 'Status');
-    data.addColumn('number', 'Count');
-    data.addRows([
-        ['PENDING', pendingCount],
-        ['APPROVED', approvedCount],
-        ['DENIED', deniedCount]
+    const data = new google.visualization.arrayToDataTable([
+        ['Status', 'Amount'],
+        ['PENDING', pendingAmount],
+        ['APPROVED', approvedAmount],
+        ['DENIED', deniedAmount]
     ]);
-
     const data2 = new google.visualization.arrayToDataTable([
-        ['Status', 'Amount', {role: 'style'}],
-        ['PENDING', pendingAmount, 'color: gray' ],
-        ['APPROVED', approvedAmount, 'color: green'],
-        ['DENIED', deniedAmount, 'color: orange']
+        ['Status', 'Count', {role: 'style'}],
+        ['PENDING', pendingCount, 'color: gray' ],
+        ['APPROVED', approvedCount, 'color: green'],
+        ['DENIED', deniedCount, 'color: orange']
     ]);
 
     // Set chart options
-    const options = {'title':'Expense Approval Rate',
+    const options = {'title':'Expense Approved Amount ($)',
         // is3D: true,
         'width':400,
         'height':300,
@@ -77,25 +77,13 @@ function drawChart() {
             1: { color: 'green' },
             2: { color: 'orange' }
         }};
-    const options2 = {'title':'Expense Approval Amount ($)',
-        is3D: true,
-        'width':400,
-        'height':300,
+        
+    const options2 = {
+        ...options,
+        'title':'Expense Approved Count',
         legend: 'none',
-        bar: {groupWidth: "85%"},
-        fontName: 'Contrail One',
         legendTextStyle: { color: '#FFF' },
-        titleTextStyle: { color: '#FFF' },
-        hAxis: {
-            textStyle:{color: 'white'}
-        },
-        vAxis: {
-            textStyle:{color: 'white'}
-        },
-        backgroundColor: {
-            fill: 'black',
-            fillOpacity: 0.6
-        },
+        titleTextStyle: { color: '#FFF' }
     };
     // Instantiate and draw our chart, passing in some options.
     const chart = new google.visualization.PieChart(piechart);
@@ -233,9 +221,9 @@ function disPlayTable(expenseList) {
         <td>${expense.employeeId}</td>
         <td><i class="fas fa-dollar-sign"></i> ${expense.amount}</td>
         <td>
-            <span class="mr-2">${expense.status}</span>
-            <button class="btn btn-sm btn-outline-success" onclick="approveExpense(${expense.expenseId}, true)">approve</button>
-            <button class="btn btn-sm btn-outline-danger" onclick="approveExpense(${expense.expenseId}, false)">deny</button>
+            <span class="mx-auto d-block">${expense.status}</span>
+            <button class="btn btn-sm btn-outline-success m-1" onclick="approveExpense(${expense.expenseId}, true)">approve</button>
+            <button class="btn btn-sm btn-outline-danger m-1" onclick="approveExpense(${expense.expenseId}, false)">deny</button>
         </td>
         <td>
             <small>Submit on ${new Date(expense.dateSubmitted * 1000).toLocaleString()}</small>
@@ -262,6 +250,7 @@ async function getAllExpense() {
 }
 
 async function approveExpense(expenseId, isApproved) {
+    spinner.className = "visible";
     const expense = await getExpenseById(expenseId);
     const reasonTextArea = document.getElementById(`reasonTextArea${expenseId}`);
     expense.reason = reasonTextArea.value;
@@ -283,6 +272,8 @@ async function approveExpense(expenseId, isApproved) {
             return e;
     })
     disPlayTable(expenseList);
+    spinner.className = "invisible";
+    showSnackbar("Status changed")
 }
 
 async function getExpenseById(expenseId) {
@@ -296,6 +287,12 @@ async function getExpenseById(expenseId) {
 async function setUp() {
     expenseList = await getAllExpense();
     disPlayTable(expenseList);
+}
+
+function showSnackbar(message) {
+    snackbar.className = "show";
+    snackbar.innerText = message;
+    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
 
 setUp();
