@@ -13,8 +13,9 @@
 <body class="main-background">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between flex-wrap">
-            <div >
-                <h1 id="greeting" class="text-white my-3">manager home</h1>
+            <div class="text-white my-3">
+                <h3><i class="fas fa-home"></i> Welcome</h3>
+                <span id="greeting"></span>
             </div>
             <div >
                 <button class="btn btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log out</button>
@@ -38,11 +39,12 @@
         <table class="table table-hover table-sm table-dark mx-auto align-middle text-center"  style="table-layout:fixed">
             <caption class="mx-5">List of expense</caption>
             <thead>
-                <th class="col-md-1">Id<i class="mx-1 fas fa-sort-up" role="button" id="idSortBtn"></i></i></th>
+                <th class="col-md-2">Employee<i class="mx-1 fas fa-sort-up" role="button" id="idSortBtn"></i></i></th>
                 <th class="col-md-2">Amount<i role="button" id="amountSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
-                <th class="col-md-3">Status<i role="button" id="statusSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
+                <th class="col-md-2">Status<i role="button" id="statusSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
                 <th class="col-md-4">Date<i role="button" id="dateSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
-                <th class="col-md-4">Reason</th>
+                <th class="col-md-3">Reason</th>
+                <th class="col-md-1">File</th>
             </thead>
             <tbody id = "tableBody" >
                 <tr>

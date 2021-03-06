@@ -72,3 +72,9 @@ to {bottom: 0; opacity: 0;}
 from {bottom: 30px; opacity: 1;}
 to {bottom: 0; opacity: 0;}
 }
+
+.thumbnail {
+    width: 80px;
+    object-fit: contain;
+    height: 80px;
+}

@@ -20,7 +20,7 @@ const spinner = document.getElementById("spinner");
 
 const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const jwt = localStorage.getItem("jwt")
-greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userInfo.lastName}`;
+greetingTag.innerHTML = `${userInfo.role.toUpperCase()} ${userInfo.firstName} ${userInfo.lastName}`;
 const employeeId = userInfo.employeeId;
 let expenseList;
 let pendingCount = 0;
@@ -232,6 +232,11 @@ function disPlayTable(expenseList) {
         </td>
         <td>
             <textarea class="form-control" id="reasonTextArea${expense.expenseId}" rows="2">${expense.reason}</textarea>
+        </td>
+        <td>
+            <a href="${expense.imgUrl}" target="_blank">
+                <img class="thumbnail" src="${expense.imgUrl}" alt="No img" onerror="this.onerror=null; this.remove();">
+            </a>
         </td>
     </tr>`;
     });

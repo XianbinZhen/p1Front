@@ -31,8 +31,8 @@ const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 const employeeId = userInfo.employeeId;
 const jwt = localStorage.getItem("jwt")
 let file = null;
-let imgURL = null;
-greetingTag.innerHTML = `welcome: ${userInfo.role} ${userInfo.firstName} ${userInfo.lastName}`;
+let imgUrl;
+greetingTag.innerHTML = `${userInfo.role.toUpperCase()} ${userInfo.firstName} ${userInfo.lastName}`;
 
 logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwt")
@@ -44,94 +44,109 @@ fileButton.addEventListener("change", e => {
     file = e.target.files[0];
 });
 
-function uploadFileToFirebase() {
-    if (file == null) return;
-    let storageRef = firebase.storage().ref(`Images/${file.name}`);
-    let task = storageRef.put(file);
-    task.on("state_change",
-        function progress(snapshot) {
-            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            uploader.value = percentage;
-        },
-        function error(err) {
-            console.log(err);
-        },
-        function complete(){
-            task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                imgURL = downloadURL;
-                // console.log('File available at', downloadURL);
-            });
-        });
-};
-
-submitExpenseBtn.addEventListener("click", createExpense)
-
+submitExpenseBtn.addEventListener("click", createExpense);
 
 async function getAllExpenseByEmployeeId(id) {
     const httpResponse = await fetch(`http://35.202.169.35:7000/expense?employeeId=${id}`);
     const allExpense = await httpResponse.json();
-    
     let innerHtml = '';
 
-    allExpense.forEach(element => {
+    allExpense.forEach(expense => {
         innerHtml += `<tr>
-        <td><i class="fas fa-dollar-sign"></i> ${element.amount}</td>
-        <td style="overflow: hidden">${element.reason}</td>
-        <td>${element.status}</td>
-        <td>${new Date(element.dateSubmitted * 1000).toLocaleString()}</td>
-        <td>${new Date(element.dateProcessed * 1000).toLocaleString()}</td>
+        <td><i class="fas fa-dollar-sign"></i> ${expense.amount}</td>
+        <td>${expense.status}</td>
+        <td>
+        <small>Submit on ${new Date(expense.dateSubmitted * 1000).toLocaleString()}</small>
+        <br>
+        <small>Process on ${new Date(expense.dateProcessed * 1000).toLocaleString()}</small>
+        </td>
+        <td style="overflow: hidden">${expense.reason}</td>
+        <td>
+            <a href="${expense.imgUrl}" target="_blank">
+                <img class="thumbnail" src="${expense.imgUrl}" alt="No img" onerror="this.onerror=null; this.remove();">
+            </a>
+        </td>
     </tr>`
     });
     tableBody.innerHTML = innerHtml;
-}
+};
 
 async function createExpense() {
     spinner.className = "visible";
     const amount = parseFloat(amountInput.value);
     const reason = reasonTextArea.value;
     if (reason != "" && amount > 0) {
-        uploadFileToFirebase();
-        const expense = {
-            reason,
-            amount,
-            employeeId: employeeId,
-            status: "PENDING",
-            imgURL
-        }
-        console.log(imgURL)
-        const detail = {
-            method: "POST",
-            body: JSON.stringify(expense)
-        }
-        const httpResponse = await fetch("http://35.202.169.35:7000/expense", detail);
-        if(httpResponse.status === 201){
-            clearInput(); 
-            // alert("Your book was saved correctly")
-            getAllExpenseByEmployeeId(employeeId);
-            errorMessage.innerHTML = "";
-            showSnackbar("Your expense is submitted successfully."); 
-    spinner.className = "invisible";
-
-        }else{
-            errorMessage.innerHTML = "Cannot save to database."
-            showSnackbar(`Error: ${httpResponse.status}`)
-    spinner.className = "invisible";
-
+        if (file != null) {
+            spinner.className = "visible";
+            let storageRef = firebase.storage().ref(`Images/${file.name}`);
+            let task = storageRef.put(file);
+            task.on("state_change",
+            function progress(snapshot) {
+                let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                uploader.value = percentage;
+            },
+            function error(err) {
+                console.log(err);
+                spinner.className = "invisible";
+            },
+            function complete(){
+                task.snapshot.ref.getDownloadURL().then(async (downloadURL) => {
+                    imgUrl = downloadURL;
+                    // console.log('File available at', downloadURL);
+                    const expense = {
+                        reason,
+                        amount,
+                        employeeId: employeeId,
+                        status: "PENDING",
+                        imgUrl
+                    };
+                    uploadData(expense);
+                });
+            });
+        } else {
+            const expense = {
+                reason,
+                amount,
+                employeeId: employeeId,
+                status: "PENDING",
+                imgUrl
+            };
+            uploadData(expense);
         }
     } else {
         errorMessage.innerHTML = "Please fill out the form with correct data."
         showSnackbar("Incorrect field.")
-    spinner.className = "invisible";
-
+        spinner.className = "invisible";
     }
-}
+};
+
+async function uploadData(expense) {
+    const detail = {
+        method: "POST",
+        body: JSON.stringify(expense)
+    }
+    const httpResponse = await fetch("http://35.202.169.35:7000/expense", detail);
+    if(httpResponse.status === 201){
+        clearInput(); 
+        // alert("Your book was saved correctly")
+        getAllExpenseByEmployeeId(employeeId);
+        errorMessage.innerHTML = "";
+        showSnackbar("Your expense is submitted successfully."); 
+        spinner.className = "invisible";   
+    } else {
+        errorMessage.innerHTML = "Cannot save to database."
+        showSnackbar(`Error: ${httpResponse.status}`)
+        spinner.className = "invisible";
+    };
+    spinner.className = "invisible";
+};
 
 function clearInput() {
     reasonTextArea.value = "";
     amountInput.value = "";
     fileButton.value = "";
     uploader.value = 0;
-}
+};
 
 function showSnackbar(message) {
     snackbar.className = "show";
