@@ -4,7 +4,7 @@ body {
 }
 
 .main-background {
-    background:  linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url("/img/homeBg.png");
+    background:  linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url("https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/homeBg.png?alt=media&token=8130375d-e340-47f1-8e4f-5e98b58499a6");
     background-repeat: no-repeat;
     background-position:center bottom;
     object-fit: contain;
@@ -74,7 +74,7 @@ to {bottom: 0; opacity: 0;}
 }
 
 .thumbnail {
-    width: 80px;
+    width: 62px;
     object-fit: contain;
-    height: 80px;
+    height: 62px;
 }
