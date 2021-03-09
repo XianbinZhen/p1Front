@@ -1,14 +1,14 @@
 # PROJECT NAME
 
-## Revature project 1 - Expense Imbursement System (backend)
+## Revature project 1 - Expense Imbursement System (front end)
 
 * https://xianbinzhen.github.io/revature_p1_expense_imburesement_system/
 
 ## Technologies Used
 
-* Gradle
-* Javalin
-* Hibernate
+* HTML, CSS, JavaScript
+* Boostrap 4.0
+* 
 
 ## Features
 
