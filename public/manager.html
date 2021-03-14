@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='favicon.svg'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/style.css">
+    <title>Manager Home</title>
+</head>
+<body class="main-background">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div class="text-white my-3">
+                <h3><i class="fas fa-home"></i> Welcome</h3>
+                <span id="greeting"></span>
+            </div>
+            <div >
+                <button class="btn btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log out</button>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center flex-wrap my-3">
+            <div id="piechart"></div>
+            <div id="piechart2"></div>
+        </div>
+    </div>
+    <hr class="text-white">
+    <ul class="pagination align-items-center m-3">
+        <li class="page-item">
+            <button class="nextBtn btn btn-danger m-1" id="previousBtn" ><i class="fas fa-angle-double-left"></i> Previous</button>
+        </li>
+        <li class="page-item"><Span class="mx-2 text-white" id="currentPage">1 / 1</Span></li>
+        <li class="page-item">
+            <button class="nextBtn btn btn-danger m-1" id="nextBtn">Next <i class="fas fa-angle-double-right"></i></button>
+        </li>
+    </ul>
+        <table class="table table-hover table-sm table-dark mx-auto align-middle text-center"  style="table-layout:fixed">
+            <caption class="mx-5">List of expense</caption>
+            <thead>
+                <th class="col-md-2">Employee<i class="mx-1 fas fa-sort-up" role="button" id="idSortBtn"></i></i></th>
+                <th class="col-md-2">Amount<i role="button" id="amountSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
+                <th class="col-md-2">Status<i role="button" id="statusSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
+                <th class="col-md-4">Date<i role="button" id="dateSortBtn" class="mx-1 fas fa-minus-circle"></i></th>
+                <th class="col-md-3">Reason</th>
+                <th class="col-md-1">File</th>
+            </thead>
+            <tbody id = "tableBody" >
+                <tr>
+                    <td>amount</td>
+                    <td>reason</td>
+                    <td>status</td>
+                    <td>date</td>
+                    <td>date</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="mt-5 mb-3 text-muted text-center"><i class="far fa-copyright"></i> Revature 2021</p>
+        <div id="snackbar">Your expense is submitted successfully.</div>
+        <div id="spinner" class="invisible">
+            <div class="d-block position-fixed text-warning w-100 text-center p-2  bottom-50">
+                <div class="spinner-border " role="status"></div>
+                Loading...
+            </div>
+        </div>
+</body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="JS/manager.js"></script>
+</html>

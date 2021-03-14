@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='favicon.svg'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/style.css">
+    <title>Employee Home</title>
+</head>
+<body class="main-background">
+    
+    <div class="container  text-white">
+        <div class="d-flex align-items-center my-3 justify-content-between flex-wrap opacity-4">
+            <div class="text-white my-3">
+                <h3><i class="fas fa-home"></i> Welcome</h3>
+                <span id="greeting"></span>
+            </div>
+            <div>
+                <button class="btn btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log out</button>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex flex-row flex-wrap justify-content-between align-items-end">
+                <div class="my-3 me-3 flex-fill">
+                    <label for="amountInput" class="form-label">Amount <i class="fas fa-dollar-sign"></i></label>
+                    <input type="number" class="form-control" id="amountInput">
+                </div>
+                <div class="flex-fill me-3 mb-3">
+                    <progress value="0" max="100" id="uploader" class="w-100"></progress>
+                    <input type="file" accept="image/png, image/jpeg" class="form-control align" id="fileButton">
+                </div>
+            </div>
+            <div class="my-3">
+                <label for="reasonTextArea" class="form-label">Reason</label>
+                <textarea class="form-control" id="reasonTextArea" rows="3"></textarea>
+            </div>
+            <button class="btn btn-warning" id="submitExpenseBtn"><i class="fas fa-upload"></i> Submit expense</button>
+            <span class="mx-2 text-danger" id="errorMessage"></span>
+        </div>
+    </div>
+    <div>
+        <hr>
+        <table class="table table-hover table-dark text-center align-middle"  style="table-layout:fixed">
+            <thead >
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>File</th>
+            </thead>
+            <tbody id = "tableBody" >
+                <tr>
+                    <td>amount</td>
+                    <td>reason</td>
+                    <td>status</td>
+                    <td>date</td>
+                    <td>date</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="mt-5 mb-3 text-muted text-center"><i class="far fa-copyright"></i> Revature 2021</p>
+        
+        <div id="snackbar">Your expense is submitted successfully.</div>
+        <div id="spinner" class="invisible">
+            <div class="d-block position-fixed text-warning w-100 text-center p-2  bottom-50">
+                <div class="spinner-border" role="status"></div>
+                Loading...
+            </div>
+        </div>
+    </div>
+
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-storage.js"></script>  
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+
+<script src="JS/employee.js"></script>
+</html>

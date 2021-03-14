@@ -52,6 +52,7 @@ function showSnackbar(message) {
     snackbar.innerText = message;
     setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
+
 // async function checkUserpassword(username, password) {
 //     const httpResponse = await fetch(`http://localhost:7000/employee?username=${username}&password=${password}`);
 //     const user = await httpResponse.json();

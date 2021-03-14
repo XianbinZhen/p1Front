@@ -35,11 +35,6 @@
 
 > `git clone https://github.com/XianbinZhen/revature_p1_expense_imburesement_system.git`
 
-## Preview
-
-<img src="https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/revature_p1_front%2F1.PNG?alt=media&token=14a49da7-f179-418a-ac1a-757093380a2f" width="300">
-<img src="https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/revature_p1_front%2F2.PNG?alt=media&token=432ec5cf-f323-471f-9dc9-850fed8cb4f0" width="300">
-<img src="https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/revature_p1_front%2F3.PNG?alt=media&token=dc89de21-28e0-49af-b348-4d2d6221cbdb" width="300">
 
 
 ## Usage
@@ -63,3 +58,8 @@
 <!-- ## License
 
 This project uses the following license: [<license_name>](<link>). -->
+## Preview
+
+<img src="https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/revature_p1_front%2F1.PNG?alt=media&token=14a49da7-f179-418a-ac1a-757093380a2f" width="300">
+<img src="https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/revature_p1_front%2F2.PNG?alt=media&token=432ec5cf-f323-471f-9dc9-850fed8cb4f0" width="300">
+<img src="https://firebasestorage.googleapis.com/v0/b/zhen-305115.appspot.com/o/revature_p1_front%2F3.PNG?alt=media&token=dc89de21-28e0-49af-b348-4d2d6221cbdb" width="300">
