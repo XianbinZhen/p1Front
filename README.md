@@ -1,6 +1,6 @@
 # Revature project 1 - Expense Imbursement System (front end)
 
-* Try it here: https://xianbinzhen.github.io/revature_p1_expense_imburesement_system/
+* Try it here: https://ersystem-29cb9.firebaseapp.com/index.html
 * backend git: https://github.com/XianbinZhen/p1BackEnd
 
 ## Technologies Used
